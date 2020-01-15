@@ -29,7 +29,7 @@ namespace GreenMonkeysMVC.Controllers
         // GET: Departments
         public ActionResult Index()
         {
-            var getEmployees = GetEmployeeCount();
+            //var getEmployees = GetEmployeeCount();
 
             using (SqlConnection conn = Connection)
             {
@@ -49,20 +49,23 @@ namespace GreenMonkeysMVC.Controllers
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Name = reader.GetString(reader.GetOrdinal("DepartmentName")),
-                            Budget = reader.GetInt32(reader.GetOrdinal("Budget"))
+                            Budget = reader.GetInt32(reader.GetOrdinal("Budget")),
+                            EmployeeCount = reader.GetInt32(reader.GetOrdinal("EmployeeCount"))
                         });
-                        reader.Close();
+                        //reader.Close();
 
-                        var viewModel = new DepartmentViewModel
-                        {
-                            Departments = departments,
-                            Employees = getEmployees
-                        };
-                        reader.Close();
-                        return View(viewModel);
+                        //var viewModel = new DepartmentViewModel
+                        //{
+                        //    Departments = departments,
+                        //    Employees = getEmployees
+                        //};
+                        //reader.Close();
+                        //return View(viewModel);
+                        //reader.Close();
+                        //return View(departments);
                     }
                     reader.Close();
-                    return NotFound();
+                    return View(departments);
                 }
             }
         }
