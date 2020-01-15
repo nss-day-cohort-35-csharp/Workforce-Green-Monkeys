@@ -11,11 +11,11 @@
     <hr />
     <dl class="row">
         @*<dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TrainingProgram.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TrainingProgram.Id)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.TrainingProgram.Id)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TrainingProgram.Id)
+            </dd>*@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TrainingProgram.Name)
         </dt>
@@ -53,14 +53,20 @@
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             @*<td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                @Html.ActionLink("Details", "Details", new { id = item.Id })
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>*@
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>*@
         </tr>
     }
 </tbody>
+
+@if (Model.TrainingProgram.StartDate > DateTime.Now)
+{
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.TrainingProgram.Id }) |
+    </div>
+}
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.TrainingProgram.Id}) |
     <a asp-action="Index">Back to List</a>
 </div>

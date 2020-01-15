@@ -77,6 +77,7 @@ namespace GreenMonkeysMVC.Controllers
 
                     if (reader.Read())
                     {
+
                         var trainingProgram = new TrainingProgram
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
@@ -144,6 +145,7 @@ namespace GreenMonkeysMVC.Controllers
         // GET: TrainingPrograms/Edit/5
         public ActionResult Edit(int id)
         {
+        
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
