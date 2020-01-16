@@ -177,9 +177,10 @@ namespace GreenMonkeysMVC.Controllers
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT Id, Make, Model, PurchaseDate, DecomissionDate
-                                        FROM Computer
-                                        WHERE Id = @Id";
+                    cmd.CommandText = @"SELECT c.Id, c.Make, c.Model, c.PurchaseDate, c.DecomissionDate
+                                            FROM Computer c
+                                            LEFT JOIN Employee e ON c.Id = e.ComputerId
+                                            WHERE c.Id = @id";
 
                     cmd.Parameters.Add(new SqlParameter("@id", id));
 
@@ -195,9 +196,11 @@ namespace GreenMonkeysMVC.Controllers
                             PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
                             // The code below checks to see if DecommissionDate is Null. If it is Null, it returns DateTime.MinValue.
                             DecomissionDate = reader.IsDBNull(reader.GetOrdinal("DecomissionDate")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("DecomissionDate"))
-                        };
+                        }; 
+
 
                         reader.Close();
+                        ViewBag.Employee = GetEmployee(id);
                         return View(computer);
                     }
                     return NotFound();
@@ -205,7 +208,7 @@ namespace GreenMonkeysMVC.Controllers
             }
         }
 
-        // POST: Computers/Delete/5
+        // POST: Computer/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Computer computer)
@@ -217,38 +220,102 @@ namespace GreenMonkeysMVC.Controllers
                     conn.Open();
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = @"SELECT c.Id, c.Make, c.Model, c.PurchaseDate, c.DecomissionDate
-                                            FROM Computer c
-                                            LEFT JOIN Employee e ON c.Id = e.ComputerId
-                                            WHERE e.ComputerId Is Null AND  c.Id = @Id";
+                        cmd.CommandText = @"DELETE FROM Computer WHERE Id = @id";
 
                         cmd.Parameters.Add(new SqlParameter("@id", id));
-                        var reader = cmd.ExecuteReader();
-                        if (reader.Read())
-                        {
-                            var compId = reader.GetInt32(reader.GetOrdinal("Id"));
-                            if (id == compId)
-                            {
-                                reader.Close();
-                                cmd.CommandText = @"DELETE FROM Computer WHERE Id = @Id";
-                                cmd.ExecuteNonQuery();
-                                return RedirectToAction(nameof(Index));
 
-                            }
-                            else
-                            {
-                                throw new Exception("This computer is still in use");
-                            }
-                        }
+                        cmd.ExecuteNonQuery();
+
                         return RedirectToAction(nameof(Index));
-
                     }
                 }
 
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        //// POST: Computers/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, Computer computer)
+        //{
+        //    try
+        //    {
+        //        using (SqlConnection conn = Connection)
+        //        {
+        //            conn.Open();
+        //            using (SqlCommand cmd = conn.CreateCommand())
+        //            {
+        //                cmd.CommandText = @"SELECT c.Id, c.Make, c.Model, c.PurchaseDate, c.DecomissionDate
+        //                                    FROM Computer c
+        //                                    LEFT JOIN Employee e ON c.Id = e.ComputerId
+        //                                    WHERE e.ComputerId Is Null AND  c.Id = @Id";
+
+        //                cmd.Parameters.Add(new SqlParameter("@id", id));
+        //                var reader = cmd.ExecuteReader();
+        //                if (reader.Read())
+        //                {
+        //                    var compId = reader.GetInt32(reader.GetOrdinal("Id"));
+
+        //                    if (id == compId)
+        //                    {
+        //                        cmd.CommandText = @"DELETE FROM Computer WHERE Id = @Id";
+        //                        cmd.ExecuteNonQuery();
+        //                        return RedirectToAction(nameof(Index));
+
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    throw new Exception("This computer is still in use");
+
+        //                }
+        //                reader.Close();
+
+        //            }
+        //            return RedirectToAction(nameof(Index));
+
+        //        }
+        //    }
+
+
+        //    catch
+        //    {
+        //        return RedirectToAction(nameof(Index));
+
+        //    }
+        //}
+
+        // Helper method to get employee
+        private Employee GetEmployee(int computerId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id, FirstName, LastName FROM Employee
+                                        WHERE ComputerId = @ComputerId ";
+
+                    cmd.Parameters.AddWithValue("@ComputerId", computerId);
+                    var reader = cmd.ExecuteReader();
+                    Employee employee = null;
+                    while (reader.Read())
+                    {
+                        employee = new Employee
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName"))
+
+                        };
+                    }
+                    reader.Close();
+                    return employee;
+                }
             }
         }
     }
