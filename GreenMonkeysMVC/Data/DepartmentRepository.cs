@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GreenMonkeysMVC.Models;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace GreenMonkeysMVC.Data
@@ -24,7 +23,7 @@ namespace GreenMonkeysMVC.Data
             {
                 // This is "address" of the database
                 // "Data Source=localhost\\SQLEXPRESS;Initial Catalog=DepartmentsEmployees;Integrated Security=True";
-                string _connectionString = "Server=127.0.0.1,1401;Database=DepartmentsEmployees;User Id=SA;Password=Yerbamate19$";
+                string _connectionString = "Server=localhost\\SQLEXPRESS;Database=BangazonWorkforce;Trusted_Connection=True;";
                 return new SqlConnection(_connectionString);
             }
         }
@@ -117,7 +116,7 @@ namespace GreenMonkeysMVC.Data
                         {
                             Id = id,
                             Name = reader.GetString(reader.GetOrdinal("Name")),
-                            Budget = reader.GetInt32(reader.GetOrdinal("Name"))
+                            Budget = reader.GetInt32(reader.GetOrdinal("Budget"))
                         };
                     }
 

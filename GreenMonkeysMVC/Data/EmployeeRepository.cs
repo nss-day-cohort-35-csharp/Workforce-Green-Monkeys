@@ -173,7 +173,7 @@ namespace GreenMonkeysMVC.Data
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     // Here we setup the command with the SQL we want to execute before we execute it.
-                    cmd.CommandText = "SELECT Id, FirstName, LastName, DepartmentId FROM Employee";
+                    cmd.CommandText = "SELECT Id, FirstName, LastName, DepartmentId, Email, IsSupervisor, ComputerId FROM Employee";
 
                     // Execute the SQL in the database and get a "reader" that will give us access to the data.
                     SqlDataReader reader = cmd.ExecuteReader();

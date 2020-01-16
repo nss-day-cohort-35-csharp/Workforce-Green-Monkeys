@@ -15,8 +15,10 @@ namespace GreenMonkeysMVC.Controllers
         // GET: Employees
         public ActionResult Index()
         {
+         
             EmployeeRepository employeeRepo = new EmployeeRepository();
             List<Employee> allEmployeesWithDepartments = employeeRepo.GetAllEmployeesWithDepartment();
+        
             return View(allEmployeesWithDepartments);
         }
 
