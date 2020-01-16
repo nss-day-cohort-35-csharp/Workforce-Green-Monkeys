@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace GreenMonkeysMVC.Models
 {
     public class Employee
@@ -13,5 +14,6 @@ namespace GreenMonkeysMVC.Models
         public string Email { get; set; }
         public bool IsSupervisor { get; set; }
         public int ComputerId { get; set; }
+        public Department Department { get; set; }
     }
 }
