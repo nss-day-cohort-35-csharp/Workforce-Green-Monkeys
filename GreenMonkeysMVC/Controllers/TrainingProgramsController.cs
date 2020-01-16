@@ -58,7 +58,7 @@ namespace GreenMonkeysMVC.Controllers
             }
         }
     
-        // GET: TrainingPrograms
+        // GET: Past TrainingPrograms
         public ActionResult PastIndex()
         {
             using (SqlConnection conn = Connection)
