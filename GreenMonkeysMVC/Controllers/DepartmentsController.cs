@@ -69,20 +69,39 @@ namespace GreenMonkeysMVC.Controllers
                     cmd.CommandText = @"SELECT d.Id AS DepartmentId, d.[Name] AS Department, d.Budget AS Budget, e.Id AS EmployeeId,
                                         e.FirstName + ' ' + e.LastName AS Employee FROM Department d LEFT JOIN Employee e
                                         ON d.Id = e.DepartmentId
-                                        WHERE Id = @id";
+                                        WHERE D.Id = @id";
 
                     cmd.Parameters.Add(new SqlParameter("@id", id));
 
                     var reader = cmd.ExecuteReader();
+                    Department department = null;
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        var department = new Department
+                        if (department == null)
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Name = reader.GetString(reader.GetOrdinal("Name")),
-                            Budget = reader.GetInt32(reader.GetOrdinal("Budget")),
-                        };
+                            department = new Department
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                                Budget = reader.GetInt32(reader.GetOrdinal("Budget")),
+                                EmployeeCount = reader.GetInt32(reader.GetOrdinal("EmployeeCount"))
+                            };
+                        }
+                        if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
+                        {
+                            department.employees.Add(
+                                new Employee()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
+                                    FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                    LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                    IsSupervisor = reader.GetBoolean(reader.GetOrdinal("IsSupervisor")),
+                                    DepartmentId = reader.GetInt32(reader.GetOrdinal("Id"))
+                                }
+                            );
+                        }
+
 
                         reader.Close();
                         return View(department);
