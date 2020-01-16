@@ -35,7 +35,39 @@ namespace GreenMonkeysMVC.Controllers
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT * FROM TrainingProgram
-                                        WHERE StartDate > GETDATE()";
+                                        WHERE StartDate >= GETDATE()";
+
+                    var reader = cmd.ExecuteReader();
+
+                    var trainingPrograms = new List<TrainingProgram>();
+
+                    while (reader.Read())
+                    {
+                        trainingPrograms.Add(new TrainingProgram
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate")),
+                            EndDate = reader.GetDateTime(reader.GetOrdinal("EndDate")),
+                            MaxAttendees = reader.GetInt32(reader.GetOrdinal("Maxattendees"))
+                        });
+                    }
+                    reader.Close();
+                    return View(trainingPrograms);
+                }
+            }
+        }
+    
+        // GET: Past TrainingPrograms
+        public ActionResult PastIndex()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT * FROM TrainingProgram
+                                        WHERE StartDate < GETDATE()";
 
                     var reader = cmd.ExecuteReader();
 
