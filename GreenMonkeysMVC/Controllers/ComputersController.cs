@@ -29,7 +29,7 @@ namespace GreenMonkeysMVC.Controllers
 
 
         // GET: All Computers
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
             using (SqlConnection conn = Connection)
             {
@@ -39,6 +39,12 @@ namespace GreenMonkeysMVC.Controllers
                     cmd.CommandText = @"SELECT c.Id as ComputerId, c.PurchaseDate, 
                                         c.DecomissionDate, c.Make, c.Model
                                         FROM Computer c";
+
+
+                    {
+                        cmd.CommandText += @" WHERE Make LIKE @searchString OR Model LIKE @searchString";
+                    }
+                    cmd.Parameters.Add(new SqlParameter("@searchString", "%" + searchString + "%"));
 
                     var reader = cmd.ExecuteReader();
 
@@ -52,8 +58,6 @@ namespace GreenMonkeysMVC.Controllers
                             Make = reader.GetString(reader.GetOrdinal("Make")),
                             Model = reader.GetString(reader.GetOrdinal("Model")),
                             PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
-                            // The code below checks to see if DecommissionDate is Null. If it is Null, it returns DateTime.MinValue.
-                            DecomissionDate = reader.IsDBNull(reader.GetOrdinal("DecomissionDate")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("DecomissionDate"))
                         });
 
                     }
@@ -73,41 +77,63 @@ namespace GreenMonkeysMVC.Controllers
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT c.Id as ComputerId, c.PurchaseDate, 
-                                        c.DecomissionDate, c.Make, c.Model
-                                        FROM Computer c
+                    cmd.CommandText = @"SELECT Id as ComputerId, PurchaseDate, 
+                                        DecomissionDate, Make, Model
+                                        FROM Computer 
                                         WHERE Id = @id";
+
                     cmd.Parameters.Add(new SqlParameter("@Id", id));
                     var reader = cmd.ExecuteReader();
 
                     if (reader.Read())
                     {
-                        var computer = new Computer
+                        var decomissionNotNull = !reader.IsDBNull(reader.GetOrdinal("DecomissionDate"));
+
+                        if (decomissionNotNull)
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("ComputerId")),
-                            Make = reader.GetString(reader.GetOrdinal("Make")),
-                            Model = reader.GetString(reader.GetOrdinal("Model")),
-                            PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
-                            // The code below checks to see if DecommissionDate is Null. If it is Null, it returns DateTime.MinValue.
-                            DecomissionDate = reader.IsDBNull(reader.GetOrdinal("DecomissionDate")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("DecomissionDate"))
-                        };
+                            var computer = new Computer
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ComputerId")),
+                                Make = reader.GetString(reader.GetOrdinal("Make")),
+                                Model = reader.GetString(reader.GetOrdinal("Model")),
+                                PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
+                                DecomissionDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate"))
+                            };
+                            reader.Close();
+                            return View(computer);
 
+                        }
+
+                        else
+                        {
+                            var computer = new Computer
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("ComputerId")),
+                                Make = reader.GetString(reader.GetOrdinal("Make")),
+                                Model = reader.GetString(reader.GetOrdinal("Model")),
+                                PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate"))
+                            };
+
+                            reader.Close();
+                            return View(computer);
+
+                        }
+                    }    
                         reader.Close();
-                        return View(computer);
+                            return NotFound();
+                        }
                     }
-                    reader.Close();
-                    return NotFound();
-                }
+                  }
+                
+            
+        
+
+
+            // GET: Computers/Create
+            public ActionResult Create()
+            {
+                return View();
             }
-        }
-
-
-
-        // GET: Computers/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
 
         // POST: Exercises/Create
