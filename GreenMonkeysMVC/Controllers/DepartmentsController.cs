@@ -82,10 +82,9 @@ namespace GreenMonkeysMVC.Controllers
                         {
                             department = new Department
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                Name = reader.GetString(reader.GetOrdinal("Name")),
-                                Budget = reader.GetInt32(reader.GetOrdinal("Budget")),
-                                EmployeeCount = reader.GetInt32(reader.GetOrdinal("EmployeeCount"))
+                                Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
+                                Name = reader.GetString(reader.GetOrdinal("Department")),
+                                Budget = reader.GetInt32(reader.GetOrdinal("Budget"))
                             };
                         }
                         if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
@@ -94,10 +93,7 @@ namespace GreenMonkeysMVC.Controllers
                                 new Employee()
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
-                                    FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                                    LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                                    IsSupervisor = reader.GetBoolean(reader.GetOrdinal("IsSupervisor")),
-                                    DepartmentId = reader.GetInt32(reader.GetOrdinal("Id"))
+                                    FirstName = reader.GetString(reader.GetOrdinal("Employee")),   
                                 }
                             );
                         }
