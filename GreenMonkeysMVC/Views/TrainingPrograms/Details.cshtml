@@ -63,9 +63,10 @@
 
 @if (Model.TrainingProgram.StartDate > DateTime.Now)
 {
-    <div>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.TrainingProgram.Id }) |
-    </div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TrainingProgram.Id }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.TrainingProgram.Id }) |
+</div>
 }
 <div>
     <a asp-action="Index">Back to List</a>
