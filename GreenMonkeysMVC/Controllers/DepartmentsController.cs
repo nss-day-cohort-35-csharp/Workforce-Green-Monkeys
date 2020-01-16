@@ -64,25 +64,42 @@ namespace GreenMonkeysMVC.Controllers
         }
 
         // GET: Departments/Create
+
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Departments/Create
+
+        // POST: Cohort/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Department department)
         {
-            try
             {
-                // TODO: Add insert logic here
+                try
+                {
+                    using (SqlConnection conn = Connection)
+                    {
+                        conn.Open();
+                        using (SqlCommand cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = @"INSERT INTO Department (Name, Budget)
+                                            VALUES (@Name, @Budget)";
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                            cmd.Parameters.Add(new SqlParameter("@Name", department.Name));
+                            cmd.Parameters.Add(new SqlParameter("@Budget", department.Budget));
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    return View();
+                }
             }
         }
 
