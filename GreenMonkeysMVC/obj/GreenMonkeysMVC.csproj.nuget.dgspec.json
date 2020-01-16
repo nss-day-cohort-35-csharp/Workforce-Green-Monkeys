@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Phil Griswold\\source\\repos\\GreenMonkeysMVC\\GreenMonkeysMVC\\GreenMonkeysMVC.csproj": {}
+    "C:\\Users\\Keaton\\workspace\\green-monkeys\\Workforce-Green-Monkeys\\GreenMonkeysMVC\\GreenMonkeysMVC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Phil Griswold\\source\\repos\\GreenMonkeysMVC\\GreenMonkeysMVC\\GreenMonkeysMVC.csproj": {
+    "C:\\Users\\Keaton\\workspace\\green-monkeys\\Workforce-Green-Monkeys\\GreenMonkeysMVC\\GreenMonkeysMVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Phil Griswold\\source\\repos\\GreenMonkeysMVC\\GreenMonkeysMVC\\GreenMonkeysMVC.csproj",
+        "projectUniqueName": "C:\\Users\\Keaton\\workspace\\green-monkeys\\Workforce-Green-Monkeys\\GreenMonkeysMVC\\GreenMonkeysMVC.csproj",
         "projectName": "GreenMonkeysMVC",
-        "projectPath": "C:\\Users\\Phil Griswold\\source\\repos\\GreenMonkeysMVC\\GreenMonkeysMVC\\GreenMonkeysMVC.csproj",
-        "packagesPath": "C:\\Users\\Phil Griswold\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Phil Griswold\\source\\repos\\GreenMonkeysMVC\\GreenMonkeysMVC\\obj\\",
+        "projectPath": "C:\\Users\\Keaton\\workspace\\green-monkeys\\Workforce-Green-Monkeys\\GreenMonkeysMVC\\GreenMonkeysMVC.csproj",
+        "packagesPath": "C:\\Users\\Keaton\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Keaton\\workspace\\green-monkeys\\Workforce-Green-Monkeys\\GreenMonkeysMVC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Phil Griswold\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Keaton\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -37,6 +37,20 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.Extensions.Logging.Debug": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
