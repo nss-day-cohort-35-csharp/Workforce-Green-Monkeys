@@ -249,6 +249,7 @@ namespace GreenMonkeysMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteDelete(int id)
         {
+            DeleteEmployeeTraining(id);
             try
             {
                 using (SqlConnection conn = Connection)
@@ -302,5 +303,21 @@ namespace GreenMonkeysMVC.Controllers
                 }
             }
         }
+        private void DeleteEmployeeTraining(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM EmployeeTraining WHERE TrainingProgramId = @id";
+
+                    cmd.Parameters.Add(new SqlParameter("@id", id));
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
 }
