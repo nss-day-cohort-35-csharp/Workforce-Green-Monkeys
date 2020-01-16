@@ -29,22 +29,23 @@ namespace GreenMonkeysMVC.Controllers
 
 
         // GET: All Computers
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string searchComputer)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT c.Id as ComputerId, c.PurchaseDate, 
-                                        c.DecomissionDate, c.Make, c.Model
-                                        FROM Computer c";
+                    
+                    cmd.CommandText = @"SELECT Id, PurchaseDate, DecomissionDate, Make, Model FROM Computer ";
 
-
+                    if (!string.IsNullOrWhiteSpace(searchComputer))
                     {
-                        cmd.CommandText += @" WHERE Make LIKE @searchString OR Model LIKE @searchString";
+                        cmd.Parameters.Add(new SqlParameter("@searchComputer", "%" + searchComputer + "%"));
+
+                        cmd.CommandText += " WHERE Make Like @searchComputer OR Model LIKE @searchComputer";
                     }
-                    cmd.Parameters.Add(new SqlParameter("@searchString", "%" + searchString + "%"));
+                    //cmd.Parameters.Add(new SqlParameter("%" + searchComputer + "%", "%" + searchComputer + "%"));
 
                     var reader = cmd.ExecuteReader();
 
@@ -54,7 +55,7 @@ namespace GreenMonkeysMVC.Controllers
                     {
                         computers.Add(new Computer
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("ComputerId")),
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Make = reader.GetString(reader.GetOrdinal("Make")),
                             Model = reader.GetString(reader.GetOrdinal("Model")),
                             PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
@@ -237,57 +238,6 @@ namespace GreenMonkeysMVC.Controllers
             }
         }
 
-        //// POST: Computers/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, Computer computer)
-        //{
-        //    try
-        //    {
-        //        using (SqlConnection conn = Connection)
-        //        {
-        //            conn.Open();
-        //            using (SqlCommand cmd = conn.CreateCommand())
-        //            {
-        //                cmd.CommandText = @"SELECT c.Id, c.Make, c.Model, c.PurchaseDate, c.DecomissionDate
-        //                                    FROM Computer c
-        //                                    LEFT JOIN Employee e ON c.Id = e.ComputerId
-        //                                    WHERE e.ComputerId Is Null AND  c.Id = @Id";
-
-        //                cmd.Parameters.Add(new SqlParameter("@id", id));
-        //                var reader = cmd.ExecuteReader();
-        //                if (reader.Read())
-        //                {
-        //                    var compId = reader.GetInt32(reader.GetOrdinal("Id"));
-
-        //                    if (id == compId)
-        //                    {
-        //                        cmd.CommandText = @"DELETE FROM Computer WHERE Id = @Id";
-        //                        cmd.ExecuteNonQuery();
-        //                        return RedirectToAction(nameof(Index));
-
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    throw new Exception("This computer is still in use");
-
-        //                }
-        //                reader.Close();
-
-        //            }
-        //            return RedirectToAction(nameof(Index));
-
-        //        }
-        //    }
-
-
-        //    catch
-        //    {
-        //        return RedirectToAction(nameof(Index));
-
-        //    }
-        //}
 
         // Helper method to get employee
         private Employee GetEmployee(int computerId)
