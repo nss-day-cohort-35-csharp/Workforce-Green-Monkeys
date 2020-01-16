@@ -22,7 +22,7 @@ namespace GreenMonkeysMVC.Models
         public string Name { get; set; }
 
         public int Budget { get; set; }
-    
+        [Display(Name = "Size of Department")]
         public int EmployeeCount { get; set; }
         public List<Employee> employees { get; set; } = new List<Employee>();
 
