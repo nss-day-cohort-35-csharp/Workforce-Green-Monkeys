@@ -66,7 +66,8 @@ namespace GreenMonkeysMVC.Controllers
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT d.Id AS DepartmentId, d.[Name] AS Department, d.Budget AS Budget, e.Id AS EmployeeId,
+                    cmd.CommandText = @"SELECT d.Id AS DepartmentId, d.[Name] AS Department, d.Budget AS Budget,
+                                        e.Id AS EmployeeId, 
                                         e.FirstName + ' ' + e.LastName AS Employee FROM Department d LEFT JOIN Employee e
                                         ON d.Id = e.DepartmentId
                                         WHERE D.Id = @id";
@@ -75,6 +76,7 @@ namespace GreenMonkeysMVC.Controllers
 
                     var reader = cmd.ExecuteReader();
                     Department department = null;
+                    var employees = new List<Employee>();
 
                     while (reader.Read())
                     {
@@ -84,18 +86,21 @@ namespace GreenMonkeysMVC.Controllers
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
                                 Name = reader.GetString(reader.GetOrdinal("Department")),
-                                Budget = reader.GetInt32(reader.GetOrdinal("Budget"))
+                                Budget = reader.GetInt32(reader.GetOrdinal("Budget")),
+                                Employees = employees
                             };
                         }
+
                         if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
                         {
-                            department.employees.Add(
+                            employees.Add(
                                 new Employee()
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
                                     FirstName = reader.GetString(reader.GetOrdinal("Employee")),   
                                 }
                             );
+                         
                         }
 
 
