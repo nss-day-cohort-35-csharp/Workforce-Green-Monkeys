@@ -75,7 +75,7 @@ namespace GreenMonkeysMVC.Data
                         int departmentIdValue = reader.GetInt32(departmentIdColumnPosition);
 
                         int emailColumnPosition = reader.GetOrdinal("Email");
-                        string emailValue = reader.GetString(departmentIdColumnPosition);
+                        string emailValue = reader.GetString(emailColumnPosition);
 
                         int isSupervisorColumnPosition = reader.GetOrdinal("IsSupervisor");
                         bool isSupervisorValue = reader.GetBoolean(isSupervisorColumnPosition);
@@ -149,7 +149,7 @@ namespace GreenMonkeysMVC.Data
         }
 
 
-        /*
+        
 
         // ||||||||||||||||||||||||| GetAllEmployeesWithDepartment ||||||||||||||||||||||||||||||
 
@@ -201,7 +201,7 @@ namespace GreenMonkeysMVC.Data
                         int departmentIdValue = reader.GetInt32(departmentIdColumnPosition);
 
                         int emailColumnPosition = reader.GetOrdinal("Email");
-                        string emailValue = reader.GetString(departmentIdColumnPosition);
+                        string emailValue = reader.GetString(emailColumnPosition);
 
                         int isSupervisorColumnPosition = reader.GetOrdinal("IsSupervisor");
                         bool isSupervisorValue = reader.GetBoolean(isSupervisorColumnPosition);
@@ -219,6 +219,9 @@ namespace GreenMonkeysMVC.Data
                             FirstName = firstNameValue,
                             LastName = lastNameValue,
                             DepartmentId = departmentIdValue,
+                            ComputerId = computerIdValue,
+                            Email = emailValue,
+                            IsSupervisor = isSupervisorValue,
                             Department = singleDepartment
                         };
 
@@ -234,6 +237,8 @@ namespace GreenMonkeysMVC.Data
                 }
             }
         }
+
+        /*
 
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 

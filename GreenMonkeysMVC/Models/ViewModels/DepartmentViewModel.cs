@@ -17,6 +17,5 @@ namespace GreenMonkeysMVC.Models.ViewModels
 
         [Display(Name = "Number of Employees")]
         public int? EmployeeNumber { get; set; }
-
     }
 }

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
+using GreenMonkeysMVC.Data;
+using GreenMonkeysMVC.Models;
 
 namespace GreenMonkeysMVC.Controllers
 {
@@ -13,8 +15,20 @@ namespace GreenMonkeysMVC.Controllers
         // GET: Employees
         public ActionResult Index()
         {
-            return View();
+            EmployeeRepository employeeRepo = new EmployeeRepository();
+            List<Employee> allEmployeesWithDepartments = employeeRepo.GetAllEmployeesWithDepartment();
+            return View(allEmployeesWithDepartments);
         }
+
+        /*
+         * 
+         * DepartmentRepository departmentRepo = new DepartmentRepository();
+                        Department singleDepartment = departmentRepo.GetDepartmentById(departmentIdValue);
+          // add to Instructors List
+                    var returnedInstructors = await new InstructorsController(_config).allInstructorsList();
+                    List<Instructor> instructorsList = new List<Instructor>(returnedInstructors);
+                    cohorts.ForEach(c => c.Instructors.AddRange(instructorsList.Where(i => i.CohortId == c.Id)));
+             */
 
         // GET: Employees/Details/5
         public ActionResult Details(int id)
