@@ -1,6 +1,6 @@
 # Green Monkeys MVC Group Project
 
-![GreenMonkey](https://github.com/nss-day-cohort-35-csharp/Workforce-Green-Monkeys/blob/master/IMG_1049.jpg = 200x300)
+![GreenMonkey](https://github.com/nss-day-cohort-35-csharp/Workforce-Green-Monkeys/blob/master/IMG_1049.jpg | 200x300)
 
 
 #### Development Team:
