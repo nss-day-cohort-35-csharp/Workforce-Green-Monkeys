@@ -57,32 +57,98 @@ namespace GreenMonkeysMVC.Controllers
             }
         }
 
-        // GET: Departments/Details/5
+        // GET: Cohorts/Details/5
+
         public ActionResult Details(int id)
         {
-            return View();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT d.Id AS DepartmentId, d.[Name] AS Department, d.Budget AS Budget,
+                                        e.Id AS EmployeeId, 
+                                        e.FirstName + ' ' + e.LastName AS Employee FROM Department d LEFT JOIN Employee e
+                                        ON d.Id = e.DepartmentId
+                                        WHERE D.Id = @id";
+
+                    cmd.Parameters.Add(new SqlParameter("@id", id));
+
+                    var reader = cmd.ExecuteReader();
+                    Department department = null;
+                    var employees = new List<Employee>();
+
+                    while (reader.Read())
+                    {
+                        if (department == null)
+                        {
+                            department = new Department
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
+                                Name = reader.GetString(reader.GetOrdinal("Department")),
+                                Budget = reader.GetInt32(reader.GetOrdinal("Budget")),
+                                Employees = employees
+                            };
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
+                        {
+                            //employees.Add(
+                            var emp = new Employee
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
+                                FirstName = reader.GetString(reader.GetOrdinal("Employee")),
+                            };
+                            department.Employees.Add(emp);
+
+                        
+                        }
+
+                    }
+
+                    reader.Close();
+                    return View(department);
+                }
+            }
         }
 
         // GET: Departments/Create
+
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Departments/Create
+
+        // POST: Cohort/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Department department)
         {
-            try
             {
-                // TODO: Add insert logic here
+                try
+                {
+                    using (SqlConnection conn = Connection)
+                    {
+                        conn.Open();
+                        using (SqlCommand cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = @"INSERT INTO Department (Name, Budget)
+                                            VALUES (@Name, @Budget)";
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                            cmd.Parameters.Add(new SqlParameter("@Name", department.Name));
+                            cmd.Parameters.Add(new SqlParameter("@Budget", department.Budget));
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    return View();
+                }
             }
         }
 

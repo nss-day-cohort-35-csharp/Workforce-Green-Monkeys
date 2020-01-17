@@ -24,7 +24,7 @@ namespace GreenMonkeysMVC.Models
         public int Budget { get; set; }
         [Display(Name = "Size of Department")]
         public int EmployeeCount { get; set; }
-        public List<Employee> employees { get; set; } = new List<Employee>();
+        public List<Employee> Employees { get; set; } = new List<Employee>();
 
     }
 
