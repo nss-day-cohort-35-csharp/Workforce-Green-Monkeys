@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<GreenMonkeysMVC.Models.TrainingProgram>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Training Programs";
 }
 
-<h1>Index</h1>
+<h1>Training Programs</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Training Program</a>
 </p>
 <table class="table">
     <thead>
@@ -50,7 +50,6 @@
                     @Html.DisplayFor(modelItem => item.MaxAttendees)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id })
                 </td>
             </tr>

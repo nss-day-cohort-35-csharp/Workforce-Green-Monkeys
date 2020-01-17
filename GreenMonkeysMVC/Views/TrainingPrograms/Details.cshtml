@@ -4,10 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+    <h1>Training Program Details</h1>
 
 <div>
-    <h4>TrainingProgram</h4>
     <hr />
     <dl class="row">
         @*<dt class="col-sm-2">
@@ -43,14 +42,13 @@
     </dl>
 </div>
 <tbody>
+    <h5>Attendees</h5>
     @foreach (var item in Model.EmployeesInTraining)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+               <li>@Html.DisplayFor(modelItem => item.FirstName)
+               @Html.DisplayFor(modelItem => item.LastName)</li>
             </td>
             @*<td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id })
@@ -60,12 +58,13 @@
         </tr>
     }
 </tbody>
+</br>
 
 @if (Model.TrainingProgram.StartDate > DateTime.Now)
 {
 <div>
     @Html.ActionLink("Edit", "Edit", new { id = Model.TrainingProgram.Id }) |
-    @Html.ActionLink("Delete", "Delete", new { id = Model.TrainingProgram.Id }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.TrainingProgram.Id }) 
 </div>
 }
 <div>
