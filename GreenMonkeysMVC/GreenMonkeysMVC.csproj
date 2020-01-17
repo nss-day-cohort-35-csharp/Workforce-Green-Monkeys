@@ -10,6 +10,14 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Photos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Photos\GreenMonkey.jpg" />
+  </ItemGroup>
+
 
 
 </Project>
