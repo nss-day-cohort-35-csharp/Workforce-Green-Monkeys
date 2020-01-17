@@ -238,7 +238,7 @@ namespace GreenMonkeysMVC.Data
             }
         }
 
-        /*
+        
 
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -250,23 +250,22 @@ namespace GreenMonkeysMVC.Data
         public void AddEmployee(Employee employee)
         {
             using (SqlConnection conn = Connection)
-            {
-                conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    // These SQL parameters are annoying. Why can't we use string interpolation?
-                    // ... sql injection attacks!!!
-                    cmd.CommandText = "INSERT INTO Employee (FirstName, LastName, DepartmentId) OUTPUT INSERTED.Id Values (@firstName, @lastName, @departmentId)";
-                    cmd.Parameters.Add(new SqlParameter("@firstName", employee.FirstName));
-                    cmd.Parameters.Add(new SqlParameter("@lastName", employee.LastName));
-                    cmd.Parameters.Add(new SqlParameter("@departmentId", employee.DepartmentId));
-                    int id = (int)cmd.ExecuteScalar();
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"INSERT INTO Employee (FirstName, LastName, DepartmentId, IsSupervisor, ComputerId)
+                                            VALUES (@firstName, @lastName, @departmentId, @isSupervisor, @computerId)";
 
-                    employee.Id = id;
+                        cmd.Parameters.Add(new SqlParameter("@firstName", employee.FirstName));
+                        cmd.Parameters.Add(new SqlParameter("@lastName", employee.LastName));
+                        cmd.Parameters.Add(new SqlParameter("@departmentId", employee.DepartmentId));
+                        cmd.Parameters.Add(new SqlParameter("@isSupervisor", employee.IsSupervisor));
+                        cmd.Parameters.Add(new SqlParameter("@computerId", employee.ComputerId));
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
-            }
-
-            // when this method is finished we can look in the database and see the new department.
         }
 
         /// <summary>
@@ -308,8 +307,6 @@ namespace GreenMonkeysMVC.Data
                 }
             }
         }
-
-    */
 
     }
 }
