@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 namespace GreenMonkeysMVC.Data
 {
 
-    public class ComputerRepository
+    public class TrainingProgramRepository
     {
         public SqlConnection Connection
         {
@@ -18,7 +18,7 @@ namespace GreenMonkeysMVC.Data
                 return new SqlConnection(_connectionString);
             }
         }
-        public List<Computer> GetAvailableComputers()
+        public List<TrainingProgram> GetTrainingProgramsByEmployeeId(int id)
         {
 
             using (SqlConnection conn = Connection)
@@ -28,68 +28,68 @@ namespace GreenMonkeysMVC.Data
 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT Id, PurchaseDate, DecomissionDate, Make, Model FROM Computer ";
+                    cmd.CommandText = @"SELECT tp.Id, tp.Name, tp.StartDate, tp.EndDate, tp.MaxAttendees
+                                        FROM EmployeeTraining et
+                                        LEFT JOIN TrainingProgram tp
+                                        ON et.TrainingProgramId = tp.Id
+                                        WHERE et.EmployeeId = @id";
+
+                    cmd.Parameters.Add(new SqlParameter("@id", id));
 
                     SqlDataReader reader = cmd.ExecuteReader();
-                        var computers = new List<Computer>();
-                        while (reader.Read())
+                    var trainingPrograms = new List<TrainingProgram>();
+                    while (reader.Read())
+                    {
+                        trainingPrograms.Add(new TrainingProgram
                         {
-                            computers.Add(new Computer
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                Make = reader.GetString(reader.GetOrdinal("Make")),
-                                Model = reader.GetString(reader.GetOrdinal("Model")),
-                                PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
-                                DecomissionDate = reader.IsDBNull(2) ? null : (DateTime?)reader.GetDateTime(reader.GetOrdinal("DecomissionDate")),
-                            });
-                        }
-                 
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate")),
+                            EndDate = reader.GetDateTime(reader.GetOrdinal("EndDate")),
+                            MaxAttendees = reader.GetInt32(reader.GetOrdinal("MaxAttendees"))
+                        });
+                    }
+
                     reader.Close();
 
-                    EmployeeRepository employeeRepo = new EmployeeRepository();
-                    List<Employee> allEmployees = employeeRepo.GetAllEmployees();
-
-                    var availableComputers = computers.Where(c => !allEmployees.Any(e => e.ComputerId == c.Id)).ToList();
-
-                    return availableComputers;
+                    return trainingPrograms;
                 }
             }
         }
 
-        
+
+        /*
 
         /// <summary>
         ///  Returns a single department with the given id.
         /// </summary>
-        public Computer GetComputerById(int id)
+        public Department GetDepartmentById(int id)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = cmd.CommandText = @"SELECT Id, PurchaseDate, DecomissionDate, Make, Model FROM Computer c WHERE c.Id = @Id ";
+                    cmd.CommandText = "SELECT Id, Name, Budget FROM Department WHERE Id = @id";
                     cmd.Parameters.Add(new SqlParameter("@Id", id));
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    Computer computer = null;
+                    Department department = null;
 
                     // If we only expect a single row back from the database, we don't need a while loop.
                     if (reader.Read())
                     {
-                        computer = new Computer
+                        department = new Department
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Make = reader.GetString(reader.GetOrdinal("Make")),
-                            Model = reader.GetString(reader.GetOrdinal("Model")),
-                            PurchaseDate = reader.GetDateTime(reader.GetOrdinal("PurchaseDate")),
-                            DecomissionDate = reader.IsDBNull(2) ? null : (DateTime?)reader.GetDateTime(reader.GetOrdinal("DecomissionDate")),
+                            Id = id,
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Budget = reader.GetInt32(reader.GetOrdinal("Budget"))
                         };
                     }
 
                     reader.Close();
 
-                    return computer;
+                    return department;
                 }
             }
         }

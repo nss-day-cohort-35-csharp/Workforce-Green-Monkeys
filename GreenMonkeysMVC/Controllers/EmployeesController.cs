@@ -37,7 +37,24 @@ namespace GreenMonkeysMVC.Controllers
         // GET: Employees/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            EmployeeRepository employeeRepo = new EmployeeRepository();
+            var employee = employeeRepo.GetEmployeeById(id);
+            DepartmentRepository departmentRepo = new DepartmentRepository();
+            var department = departmentRepo.GetDepartmentById(employee.DepartmentId);
+            ComputerRepository computerRepo = new ComputerRepository();
+            var computer = computerRepo.GetComputerById(employee.ComputerId);
+            TrainingProgramRepository trainingProgramRepo = new TrainingProgramRepository();
+            List<TrainingProgram> trainingPrograms = trainingProgramRepo.GetTrainingProgramsByEmployeeId(id);
+
+            var viewModel = new EmployeeDetailsModel()
+            {
+                Employee = employee,
+                Department = department,
+                Computer = computer,
+                TrainingPrograms = trainingPrograms
+            };
+
+            return View(viewModel);
         }
 
         // GET: Employees/Create
