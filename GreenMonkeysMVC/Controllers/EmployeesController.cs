@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using GreenMonkeysMVC.Data;
 using GreenMonkeysMVC.Models;
+using GreenMonkeysMVC.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GreenMonkeysMVC.Controllers
 {
@@ -41,7 +43,29 @@ namespace GreenMonkeysMVC.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            return View();
+            DepartmentRepository departmentRepo = new DepartmentRepository();
+            var departments = departmentRepo.GetAllDepartments().Select(d => new SelectListItem
+            {
+                Text = d.Name,
+                Value = d.Id.ToString()
+            }).ToList();
+
+            ComputerRepository computerRepo = new ComputerRepository();
+            var computers = computerRepo.GetAvailableComputers().Select(d => new SelectListItem
+            {
+                Text = $"{d.Make} {d.Model}",
+                Value = d.Id.ToString()
+            }).ToList();
+
+
+            var viewModel = new EmployeeCreateModel()
+            {
+                Employee = new Employee(),
+                Departments = departments,
+                Computers = computers
+            };
+
+            return View(viewModel);
         }
 
         // POST: Employees/Create
