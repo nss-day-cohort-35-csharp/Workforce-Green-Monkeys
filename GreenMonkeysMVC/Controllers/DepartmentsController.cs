@@ -93,24 +93,21 @@ namespace GreenMonkeysMVC.Controllers
 
                         if (!reader.IsDBNull(reader.GetOrdinal("EmployeeId")))
                         {
-                            employees.Add(
-                                new Employee()
-                                {
-                                    Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
-                                    FirstName = reader.GetString(reader.GetOrdinal("Employee")),   
-                                }
-                            );
-                         
+                            //employees.Add(
+                            var emp = new Employee
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
+                                FirstName = reader.GetString(reader.GetOrdinal("Employee")),
+                            };
+                            department.Employees.Add(emp);
+
+                        
                         }
-
-
-                        reader.Close();
-                        return View(department);
 
                     }
 
                     reader.Close();
-                    return NotFound();
+                    return View(department);
                 }
             }
         }
