@@ -34,20 +34,27 @@ namespace GreenMonkeysMVC.Controllers
             return View(allEmployeesWithDepartments);
         }
 
-        /*
-         * 
-         * DepartmentRepository departmentRepo = new DepartmentRepository();
-                        Department singleDepartment = departmentRepo.GetDepartmentById(departmentIdValue);
-          // add to Instructors List
-                    var returnedInstructors = await new InstructorsController(_config).allInstructorsList();
-                    List<Instructor> instructorsList = new List<Instructor>(returnedInstructors);
-                    cohorts.ForEach(c => c.Instructors.AddRange(instructorsList.Where(i => i.CohortId == c.Id)));
-             */
-
         // GET: Employees/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            EmployeeRepository employeeRepo = new EmployeeRepository();
+            var employee = employeeRepo.GetEmployeeById(id);
+            DepartmentRepository departmentRepo = new DepartmentRepository();
+            var department = departmentRepo.GetDepartmentById(employee.DepartmentId);
+            ComputerRepository computerRepo = new ComputerRepository();
+            var computer = computerRepo.GetComputerById(employee.ComputerId);
+            TrainingProgramRepository trainingProgramRepo = new TrainingProgramRepository();
+            List<TrainingProgram> trainingPrograms = trainingProgramRepo.GetTrainingProgramsByEmployeeId(id);
+
+            var viewModel = new EmployeeDetailsModel()
+            {
+                Employee = employee,
+                Department = department,
+                Computer = computer,
+                TrainingPrograms = trainingPrograms
+            };
+
+            return View(viewModel);
         }
 
         // GET: Employees/Create
@@ -112,22 +119,45 @@ namespace GreenMonkeysMVC.Controllers
                 return View();
             }
         }
-
         // GET: Employees/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            DepartmentRepository departmentRepo = new DepartmentRepository();
+            var departments = departmentRepo.GetAllDepartments().Select(d => new SelectListItem
+            {
+                Text = d.Name,
+                Value = d.Id.ToString()
+            }).ToList();
+
+            ComputerRepository computerRepo = new ComputerRepository();
+            var computers = computerRepo.GetAvailableComputers().Select(d => new SelectListItem
+            {
+                Text = $"{d.Make} {d.Model}",
+                Value = d.Id.ToString()
+            }).ToList();
+
+            EmployeeRepository employeeRepo = new EmployeeRepository();
+            var employee = employeeRepo.GetEmployeeById(id);
+
+             var viewModel = new EmployeeCreateModel()
+             {
+                  Employee = employee,
+                  Departments = departments,
+                  Computers = computers
+             };
+             return View(viewModel);
         }
+
 
         // POST: Employees/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Employee employee)
         {
             try
             {
-                // TODO: Add update logic here
-
+                EmployeeRepository employeeRepo = new EmployeeRepository();
+                employeeRepo.UpdateEmployee(id, employee);
                 return RedirectToAction(nameof(Index));
             }
             catch

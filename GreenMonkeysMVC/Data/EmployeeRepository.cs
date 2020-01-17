@@ -136,7 +136,7 @@ namespace GreenMonkeysMVC.Data
                             LastName = reader.GetString(reader.GetOrdinal("LastName")),
                             DepartmentId = reader.GetInt32(reader.GetOrdinal("DepartmentId")),
                             ComputerId = reader.GetInt32(reader.GetOrdinal("ComputerId")),
-                            Email = reader.GetString(reader.GetOrdinal("DepartmentId")),
+                            Email = reader.GetString(reader.GetOrdinal("Email")),
                             IsSupervisor = reader.GetBoolean(reader.GetOrdinal("IsSupervisor"))
                         };
                     }
@@ -273,22 +273,31 @@ namespace GreenMonkeysMVC.Data
         /// </summary>
         public void UpdateEmployee(int id, Employee employee)
         {
-            using (SqlConnection conn = Connection)
-            {
-                conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"UPDATE Department
-                                     SET FirstName = @firstName, LastName = @lastName, DeprtmentId = @departmentId
-                                     WHERE Id = @id";
-                    cmd.Parameters.Add(new SqlParameter("@firstName", employee.FirstName));
-                    cmd.Parameters.Add(new SqlParameter("@lastName", employee.LastName));
-                    cmd.Parameters.Add(new SqlParameter("@departmentId", employee.DepartmentId));
-                    cmd.Parameters.Add(new SqlParameter("@id", id));
+                    using (SqlConnection conn = Connection)
+                    {
+                        conn.Open();
+                        using (SqlCommand cmd = conn.CreateCommand())
+                        {
+                            cmd.CommandText = @"UPDATE Employee
+                                            SET FirstName = @firstName, 
+                                                LastName = @lastName, 
+                                                DepartmentId = @departmentId,
+                                                Email = @email,
+                                                IsSupervisor = @isSupervisor,
+                                                ComputerId = @computerId
+                                            WHERE Id = @id";
 
-                    cmd.ExecuteNonQuery();
-                }
-            }
+                            cmd.Parameters.Add(new SqlParameter("@firstName", employee.FirstName));
+                            cmd.Parameters.Add(new SqlParameter("@lastName", employee.LastName));
+                            cmd.Parameters.Add(new SqlParameter("@departmentId", employee.DepartmentId));
+                            cmd.Parameters.Add(new SqlParameter("@email", employee.Email));
+                            cmd.Parameters.Add(new SqlParameter("@isSupervisor", employee.IsSupervisor));
+                            cmd.Parameters.Add(new SqlParameter("@computerId", employee.ComputerId));
+                            cmd.Parameters.Add(new SqlParameter("@id", id));
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
         }
 
         /// <summary>
