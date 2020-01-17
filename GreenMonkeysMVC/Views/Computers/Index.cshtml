@@ -4,10 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>List of Computers</h1>
+
+<form asp-controller="Computers" asp-action="Index">
+    <p>
+        Find Computer By Make or Model: <input type="text" name="SearchComputer">
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create A New Computer</a>
 </p>
 <table class="table">
     <thead>
