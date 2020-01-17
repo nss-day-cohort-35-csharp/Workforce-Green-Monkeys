@@ -41,7 +41,6 @@ Remove departments that do not have employees
 IT has the ability to perform the following:
 
 Add a new computer to the database
-Assign/Unassign a computer to an employee
 View employee currently assigned to the computer
 Filter through computers based on make or manufacturer
 Remove a computer from the database that has never been assigned
@@ -55,4 +54,5 @@ Filter training programs by upcoming or completed
 View details of a training program including a list of attendees
 Remove upcoming programs from database
 
-Credit to [Kid's Table](https://github.com/nss-day-cohort-34/workforce-management-kids-table) for the amazing readme outline.
+
+### Credit to [Kid's Table](https://github.com/nss-day-cohort-34/workforce-management-kids-table) for the amazing README outline.
