@@ -1,14 +1,12 @@
 ﻿@model IEnumerable<GreenMonkeysMVC.Models.TrainingProgram>
 
 @{
-    ViewData["Title"] = "PastIndex";
+    ViewData["Title"] = "Past Training Programs";
 }
 
 <h1>PastIndex</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -55,3 +53,6 @@
 }
     </tbody>
 </table>
+<div class="text-center">
+    <p><a asp-action="Index">View Future Programs</a></p>
+</div>
