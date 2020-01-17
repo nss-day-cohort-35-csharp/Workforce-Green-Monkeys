@@ -5,10 +5,10 @@
 
 
 #### Development Team:
-[Dylan Griffith](https://github.com/DylPickle11)
-[Phil Griswold](https://github.com/Philgriswold)
-[Lauren Maxwell](https://github.com/laurenelizamax)
-[Keaton Williamson](https://github.com/keatonwilliamson)
+[Dylan Griffith](https://github.com/DylPickle11) <br />
+[Phil Griswold](https://github.com/Philgriswold) <br />
+[Lauren Maxwell](https://github.com/laurenelizamax) <br />
+[Keaton Williamson](https://github.com/keatonwilliamson) <br />
 
 
 ### Setup
