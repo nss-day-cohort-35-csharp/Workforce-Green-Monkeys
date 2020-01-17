@@ -1,6 +1,6 @@
 # Green Monkeys MVC Group Project
 
-![GreenMonkey](<img src="https://github.com/nss-day-cohort-35-csharp/Workforce-Green-Monkeys/blob/master/IMG_1049.jpg" alt="green monkey" width="200" height="300">)
+(![GreenMonkey]<img src="https://github.com/nss-day-cohort-35-csharp/Workforce-Green-Monkeys/blob/master/IMG_1049.jpg" alt="green monkey" width="200" height="300">)
 
 
 
